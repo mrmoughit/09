@@ -1,0 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   BitcoinExchange.hpp                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abechcha <abechcha@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/10 12:51:05 by abechcha          #+#    #+#             */
+/*   Updated: 2024/12/10 13:36:26 by abechcha         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef BITCOINEXCHANGE_HPP
+#define BITCOINEXCHANGE_HPP
+
+#include <fstream>
+#include <iostream>
+#include <map>
+#include <sstream>
+
+
+class data{
+    private:
+        std::multimap<std::string, std::string> input;
+        std::map<std::string, double> data;
+    public:
+        int check_input_file(char *str);
+        int extra_parsing();
+        std::multimap<std::string , double>::iterator get_value(std::multimap<std::string , std::string>::iterator start);
+
+};
+
+#endif
