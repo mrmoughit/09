@@ -12,6 +12,7 @@
 
 SRC = main.cpp \
 	  BitcoinExchange.cpp\
+	  test.cpp\
 
 OBJ = $(SRC:.cpp=.o)
 NAME = btc

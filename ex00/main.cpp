@@ -18,6 +18,6 @@ int main(int __attribute__((unused))ac , char **av)
     if (ac != 2)
         return (std::cout << "Error: could not open file." , 1);
     object.check_input_file(av[1]);
-    object.extra_parsing();
+    // object.extra_parsing();
     
 }

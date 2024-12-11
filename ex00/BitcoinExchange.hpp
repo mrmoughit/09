@@ -26,8 +26,12 @@ class data{
     public:
         int check_input_file(char *str);
         int extra_parsing();
-        std::multimap<std::string , double>::iterator get_value(std::multimap<std::string , std::string>::iterator start);
+        void extra_check_andGet_value(std::string line);
+        void get_value(std::string string);
 
 };
-
+int  check_value(std::string string);
+int check_year(std::string string);
+int check_month(std::string string);
+int check_day(std::string string);
 #endif
