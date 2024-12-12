@@ -12,32 +12,90 @@
 
 #include "RPN.hpp"
 
+int is_digits(std::string str){
+    int len = str.size() -1;
+    while(len >= 0)
+    {
+        if (!std::isdigit(str[len])){
+            return 0;
+        }
+        len--;
+    }
+    return 1;
+}
+int is_operator(char c)
+{
+    if (c == '+' || c == '-' || c == '/' || c == '*')
+        return 1;
+    return 0;
+}
 void rpn_cul(char *r)
 {
     int len = 1;
     std::string str = r;
-    int value = 4;
-    std::stack<int> stack;
-    for (int i = 0; str[i] ; i++){
-        for(int i = 0; str[i] && str[i] == ' ' ; i++);
-        if (std::isdigit(str[i])){
-            for (int j = 1; str[i] && std::isdigit(str[i]) ; j++){
+    int v = str.size() -1;
+    std::stack<std::string> stack;
+    std::stack<int> stack_operation;
+    for (int i = v; i >= 0 ; i--){
+        for(int i = v; str[i] && str[i] == ' ' ; i--);
+        if (std::isdigit(str[i]) || is_operator(str[i])){
+            for (int j = 1; i >= 0 && (std::isdigit(str[i]) || is_operator(str[i]) ) ; j++){
                 len = j;
-                i++;
+                i--;
             }
-            i -= len;
-            std::istringstream s(str.substr(i , len));
-            s >> value;
+            if (len == 1)
+                i += len;
+            else
+                i += (len - (len -1));
+            stack.push(str.substr(i , len));
             len = 1;
-            stack.push(value);
         }
-        // else if (str[i] == '+' || str[i] == '-' || str[i] == '/' || str[i] == '*');
-        // else:
-            // std::cerr << "Error"  << str[i]<< std::endl;
+        else if (i >= 0 && str[i] != ' ' && str[i] != '+'  &&  str[i] != '-' &&  str[i] != '/' &&  str[i] != '*'){
+            std::cerr << "Error " << std::endl;
+            return ;
+        }
     }
-    for (int i = 7 ; i > 0 ; i--){
-        std::cout << stack.top() << std::endl;
-        stack.pop();
+    int value;
+    int one = 0;
+    int two = 0;
+    int result;
+    // while(!stack.empty()){
+    //     std::cout << stack.top() << std::endl;
+    //     stack.pop();
 
+    // }
+
+    while(!stack.empty()){
+        if (!is_digits(stack.top())){
+            // while(!stack_operation.empty()){
+            //     std::cout << stack_operation.top() << std::endl;
+            //     stack_operation.pop();
+            // }
+            if (stack_operation.size() < 2)
+                std::cerr << "Error " << std::endl;
+            one = stack_operation.top();
+            stack_operation.pop();
+            two = stack_operation.top();
+            stack_operation.pop();
+            if (stack.top()[0] == '+')
+                result = two + one;
+            if (stack.top()[0] == '-')
+                result = two - one;
+            if (stack.top()[0] == '/')
+                result = two / one;
+            if (stack.top()[0] == '*')
+                result = two * one;
+            stack_operation.push(result);
+        }
+        else{
+            std::istringstream s(stack.top());
+            s >> value;
+            stack_operation.push(value);
+        }
+        stack.pop();
     }
+    if (stack_operation.size() > 1)
+        std::cerr << "Error " << std::endl;
+    else
+        std::cout << stack_operation.top() << std::endl;
 }
