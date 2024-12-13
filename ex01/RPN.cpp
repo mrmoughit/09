@@ -33,6 +33,18 @@ void rpn_cul(char *r)
 {
     int len = 1;
     std::string str = r;
+    for (size_t i = 0; i < str.size(); ++i) {
+        if (str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/') {
+            if (i > 0 && str[i - 1] != ' ') {
+                str.insert(i, " ");
+                i++;
+            }
+            if (i + 1 < str.size() && str[i + 1] != ' ') {
+                str.insert(i + 1, " ");
+                i++;
+            }
+        }
+    }
     int v = str.size() -1;
     std::stack<std::string> stack;
     std::stack<int> stack_operation;
@@ -62,29 +74,36 @@ void rpn_cul(char *r)
     // while(!stack.empty()){
     //     std::cout << stack.top() << std::endl;
     //     stack.pop();
-
     // }
-
     while(!stack.empty()){
         if (!is_digits(stack.top())){
-            // while(!stack_operation.empty()){
-            //     std::cout << stack_operation.top() << std::endl;
-            //     stack_operation.pop();
-            // }
             if (stack_operation.size() < 2)
+            {
                 std::cerr << "Error " << std::endl;
+                return ;
+            }
             one = stack_operation.top();
             stack_operation.pop();
             two = stack_operation.top();
             stack_operation.pop();
-            if (stack.top()[0] == '+')
+            if (stack.top().size() == 1 && stack.top()[0] == '+')
                 result = two + one;
-            if (stack.top()[0] == '-')
+            else if (stack.top().size() == 1 && stack.top()[0] == '-')
                 result = two - one;
-            if (stack.top()[0] == '/')
+            else if (stack.top().size() == 1 && stack.top()[0] == '/'){
+                if (one == 0){
+                    std::cerr << "devision sur 0 Error " << std::endl;
+                    return ;
+                }
                 result = two / one;
-            if (stack.top()[0] == '*')
+            }
+            else if (stack.top().size() == 1 && stack.top()[0] == '*')
                 result = two * one;
+            else{
+                std::cerr << "Error " << std::endl;
+                return ;
+            }
+
             stack_operation.push(result);
         }
         else{
