@@ -71,10 +71,6 @@ void rpn_cul(char *r)
     int one = 0;
     int two = 0;
     int result;
-    // while(!stack.empty()){
-    //     std::cout << stack.top() << std::endl;
-    //     stack.pop();
-    // }
     while(!stack.empty()){
         if (!is_digits(stack.top())){
             if (stack_operation.size() < 2)
