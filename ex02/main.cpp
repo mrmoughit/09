@@ -13,6 +13,9 @@ std::vector<int>   generateOrderIndexes(std::vector<int> vec){
             tmp--;
         }
     }
+    vector.insert(vector.begin() , 1);
+    vector.insert(vector.begin() , 0);
+    vector.push_back(0);
     return vector;
 }
 std::vector<int> generateJacobsthalSequence(int PainChainnSize) {
@@ -22,8 +25,11 @@ std::vector<int> generateJacobsthalSequence(int PainChainnSize) {
     if (PainChainnSize > 1) sequence.push_back(1);
     for (int i = 2; 1 ; ++i) {
         int next_value = sequence[i - 1] + 2 * sequence[i - 2];
-        if (next_value <= PainChainnSize)
+        if (next_value <= PainChainnSize){
             sequence.push_back(next_value);
+            if (next_value == PainChainnSize)
+                break;
+        }
         else
             break ;
     }
@@ -51,11 +57,6 @@ void recursiveSortByFirst(std::vector<std::pair<int, int> >& vec, int left, int 
 }
 
 void binarySearch(std::vector<int>& vec, int low, int high, int number) {
-    // for(std::size_t i = 0; i < vec.size() ; i++){
-    //     std::cout << vec[i] << " ";
-    // }
-    //     std::cout << std::endl;;
-
     int size = vec.size();
     while (low <= high) {
         int mid = low + (high - low) / 2;
@@ -83,7 +84,6 @@ void fordJohnsonSort(std::vector<int>& arr)
         pairs.push_back(std::make_pair(arr[2 * i], arr[2 * i + 1]));
     }
     if (n % 2 != 0) {
-        // pairs.push_back(std::make_pair(arr[n - 1], arr[n - 1]));
         last_number = arr[n - 1];
         pair = false;
     }
@@ -108,18 +108,10 @@ void fordJohnsonSort(std::vector<int>& arr)
         paind_chain.push_back(it->second);
         ++it;
     }
-    // main_chain.insert(main_chain.begin() ,paind_chain.front());
-    // paind_chain.erase(paind_chain.begin());
-    // std::vector<int> indexes= generateJacobsthalSequence(arr.size());
-    std::vector<int> indexes;
-    indexes.push_back(0);
-    indexes.push_back(1);
-    indexes.push_back(3);
-    indexes.push_back(2);
-    indexes.push_back(5);
-    indexes.push_back(4);
-    indexes.push_back(11);
-    indexes.push_back(0);
+    std::vector<int> indexes= generateJacobsthalSequence(arr.size());
+    for  (int i = 0; indexes[i] ; i++){
+        std::cout << indexes[i] << " " ;
+    }
     int s = paind_chain.size();
     for (std::size_t i = 0; i < indexes.size() -1 ; i++){
         if (indexes[i] < s)
