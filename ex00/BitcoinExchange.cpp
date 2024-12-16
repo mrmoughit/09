@@ -15,9 +15,17 @@
 int  check_value(std::string string)
 {
     int size = string.size() -1;
+    if (string[size] == '.')
+    {
+        std::cout << "invalid value "<< string << std::endl;
+        return -1;
+    }
     while (size >= 0)
     {
-        //check if the point is last char
+        if (string[size -1] && string[size] == '.' && string[size-1] == '.'){
+            std::cout << "invalid value "<< string << std::endl;
+            return -1;
+        }
         if (!std::isdigit(string[size]) && string[size] != '.' && string[size] != '-'){
             std::cout << "the value must be digits" << std::endl;
             return -1;
@@ -140,7 +148,6 @@ int data::check_input_file(char *str){
     while(std::getline(input_file , line))
     {
         if (line.size() >= 14 && line[10] == ' ' && line[11] == '|' && line[12] == ' ' && (std::isdigit(line[13]) || line[13] == '-')){
-            // input.insert(std::make_pair(line.substr(0 , 10) , line.substr(13 , line.size())));
             extra_check_andGet_value(line);
         }
         else{
@@ -156,6 +163,10 @@ void data::get_value(std::string line)
 {
     if (line.substr(0 , 4) == "2009" && line.substr(5, 2) == "01" && line.substr(8,2) == "01"){
         std::cout << "Invalid date" << std::endl;
+        return ;
+    }
+    if (line.substr(5, 2) == "02" && line.substr(8,2) > "29"){
+        std::cout << "Invalid date " << std::endl;
         return ;
     }
     std::string string= line.substr(0,10); 

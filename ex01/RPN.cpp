@@ -33,6 +33,8 @@ void rpn_cul(char *r)
 {
     int len = 1;
     std::string str = r;
+    if (str.size() < 1)
+        return ;
     for (size_t i = 0; i < str.size(); ++i) {
         if (str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/') {
             if (i > 0 && str[i - 1] != ' ') {

@@ -77,8 +77,11 @@ void fordJohnsonSort(std::vector<int>& arr)
     int last_number ;
     bool pair = true;
     int n = arr.size();
-    if (n <= 1)
+    if (n <= 1){
+        if (n == 1)
+            std::cout << arr[0] << std::endl;
         return;
+    }
     std::vector<std::pair<int, int> > pairs;
     for (int i = 0; i < n / 2; ++i){
         pairs.push_back(std::make_pair(arr[2 * i], arr[2 * i + 1]));

@@ -6,6 +6,7 @@ chhar 2
 
 
 ./RPN ""
+./RPN "        "
  number must be lower than 10
 
 
