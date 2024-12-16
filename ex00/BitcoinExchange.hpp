@@ -25,7 +25,6 @@ class data{
         std::map<std::string, double> data;
     public:
         int check_input_file(char *str);
-        int extra_parsing();
         void extra_check_andGet_value(std::string line);
         void get_value(std::string string);
 

@@ -13,8 +13,9 @@
 #include "RPN.hpp"
 int main (int ac , char **av)
 {
-    (void)av;
-    if (ac != 2)
+    if (ac != 2){
         std::cerr << "usage ./RPN \"argument\"" << std::endl;
+        return 1;
+    }
     rpn_cul(av[1]);
 }

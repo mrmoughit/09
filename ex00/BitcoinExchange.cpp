@@ -17,7 +17,7 @@ int  check_value(std::string string)
     int size = string.size() -1;
     while (size >= 0)
     {
-        //check if the point is last char 
+        //check if the point is last char
         if (!std::isdigit(string[size]) && string[size] != '.' && string[size] != '-'){
             std::cout << "the value must be digits" << std::endl;
             return -1;
@@ -58,7 +58,7 @@ int check_year(std::string string)
         std::cout << "errrorororor" << std::endl;
         return -1;
     }
-    if (year > 2023)
+    if (year < 2009 || year > 2023)
     {
         std::cout << "year error " << std::endl;
         return -1;
@@ -154,6 +154,10 @@ int data::check_input_file(char *str){
 
 void data::get_value(std::string line)
 {
+    if (line.substr(0 , 4) == "2009" && line.substr(5, 2) == "01" && line.substr(8,2) == "01"){
+        std::cout << "Invalid date" << std::endl;
+        return ;
+    }
     std::string string= line.substr(0,10); 
     std::multimap<std::string , double>::iterator  it = data.begin();
     std::multimap<std::string , double>::iterator  d = data.begin();
@@ -163,7 +167,7 @@ void data::get_value(std::string line)
     {
         if (string == it->first){
             std::istringstream s(line.substr(13, line.size()));
-            s>> value;
+            s >> value;
             std::cout  << string << " => "  << line.substr(13, line.size()) << " = " <<value * it->second << std::endl;
             return ;
         }
