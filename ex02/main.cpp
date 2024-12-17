@@ -6,12 +6,21 @@
 /*   By: abechcha <abechcha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 11:16:11 by abechcha          #+#    #+#             */
-/*   Updated: 2024/12/17 12:12:28 by abechcha         ###   ########.fr       */
+/*   Updated: 2024/12/17 12:43:08 by abechcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 
+int is_digit(std::string str){
+    int size = str.size() -1;
+    while(size){
+        if (!std::isdigit(str[size]))
+            return -1;
+        size--;
+    }
+    return 0;
+}
 
 std::vector<int>   generateOrderIndexes(std::vector<int> vec){
     std::vector<int> vector;
@@ -48,43 +57,11 @@ std::vector<int> generateJacobsthalSequence(int PainChainnSize) {
     return sequence;
 }
 
-// void recursiveSortByFirst(std::vector<std::pair<int, int> >& vec, int left, int right) {
-//     if (right - left + 1 <= 1) {
-//         return;
-//     }
-//     int pivot = vec[right].first;
-//     int i = left - 1;
 
-//     for (int j = left; j < right; ++j) {
-//         if (vec[j].first <= pivot) {
-//             i++;
-//             std::swap(vec[i], vec[j]);
-//         }
-//     }
-//     std::swap(vec[i + 1], vec[right]);
 
-//     recursiveSortByFirst(vec, left, i);
-//     recursiveSortByFirst(vec, i + 2, right);
-// }
+//-----------------------------------------------------------------------------------------//
 
-void binarySearch(std::vector<int>& vec, int low, int high, int number) {
-    int size = vec.size();
-    while (low <= high) {
-        int mid = low + (high - low) / 2;
-        if (vec[mid] <= number && (mid + 1 >= size || vec[mid + 1] > number)) {
-            vec.insert(vec.begin() + mid + 1, number);
-            return;
-        }
-
-        if (vec[mid] < number)
-            low = mid + 1;
-        else
-            high = mid - 1;
-    }
-    vec.insert(vec.begin() + low, number);
-}
-
-void fordJohnsonSort(std::vector<int>& arr)
+void fordJohnsonSort_vector(std::vector<int>& arr)
 {
     int last_number;
     bool pair = true;
@@ -108,39 +85,79 @@ void fordJohnsonSort(std::vector<int>& arr)
         last_number = arr[n - 1];
         pair = false;
     }
+    swap_pairs(pairs);
+    std::vector<int> main_chain;
+    std::vector<int> pain_chain;
+    recursiveSort(pairs , 0 , pairs.size() -1);
+    
+
     std::vector<std::pair<int, int> >::iterator it = pairs.begin();
     while(it != pairs.end()){
-        if(it->first > it->second)
-        {
-            int tmp = it->first ;
-            it->first =  it->second;
-            it->second = tmp;
-        }
-        ++it;
-    }
-    std::vector<int> main_chain;
-    std::vector<int> paind_chain;
-    recursiveSort(pairs , 0 , pairs.size() -1);
-
-    it = pairs.begin();
-    while(it != pairs.end()){
         main_chain.push_back(it->first);
-        paind_chain.push_back(it->second);
+        pain_chain.push_back(it->second);
         ++it;
     }
-    std::vector<int> indexes= generateJacobsthalSequence(arr.size());
-    for  (int i = 0; indexes[i] ; i++){
-        std::cout << indexes[i] << " " ;
-    }
-    int s = paind_chain.size();
+    std::vector<int> indexes = generateJacobsthalSequence(arr.size());
+    
+    int s = pain_chain.size();
     for (std::size_t i = 0; i < indexes.size() -1 ; i++){
         if (indexes[i] < s)
-            binarySearch(main_chain , 0 , main_chain.size() ,paind_chain[indexes[i]]);
+            binarySearch(main_chain , 0 , main_chain.size() ,pain_chain[indexes[i]]);
     }
     if (!pair)
         binarySearch(main_chain , 0 , main_chain.size() , last_number);
     print("std::vector" , start , main_chain);
 }
+
+
+
+
+
+
+
+void fordJohnsonSort_deque(std::vector<int>& arr)
+{
+    int last_number;
+    bool pair = true;
+    int n = arr.size();
+    clock_t start = clock();
+    if (n <= 1){
+        if (n == 1)
+            print("std::deque" , start , arr);
+        return;
+    }
+    std::deque<std::pair<int, int> > pairs;
+    for (int i = 0; i < n / 2; ++i){
+        pairs.push_back(std::make_pair(arr[2 * i], arr[2 * i + 1]));
+    }
+    if (n % 2 != 0) {
+        last_number = arr[n - 1];
+        pair = false;
+    }
+    swap_pairs(pairs);
+    std::vector<int> main_chain;
+    std::vector<int> pain_chain;
+    recursiveSort(pairs , 0 , pairs.size() -1);
+    
+
+    std::deque<std::pair<int, int> >::iterator it = pairs.begin();
+    while(it != pairs.end()){
+        main_chain.push_back(it->first);
+        pain_chain.push_back(it->second);
+        ++it;
+    }
+    std::vector<int> indexes = generateJacobsthalSequence(arr.size());
+    
+    int s = pain_chain.size();
+    for (std::size_t i = 0; i < indexes.size() -1 ; i++){
+        if (indexes[i] < s)
+            binarySearch(main_chain , 0 , main_chain.size() ,pain_chain[indexes[i]]);
+    }
+    if (!pair)
+        binarySearch(main_chain , 0 , main_chain.size() , last_number);
+    print("std::deque" , start , main_chain);
+}
+
 
 int main(int ac , char **av) {
     if (ac < 2){
@@ -152,6 +169,10 @@ int main(int ac , char **av) {
     std::string str;
     for (int i = 1; av[i] ; i++){
         str = av[i];
+        if (is_digit(str)){
+            std::cout << "Error  " << std::endl;
+            return 1;
+        }
         std::istringstream s(str);
         s >> value;
         if (s.fail()){
@@ -164,6 +185,7 @@ int main(int ac , char **av) {
         }
         vec.push_back(value);
     }
-    fordJohnsonSort(vec);
+    fordJohnsonSort_vector(vec);
+    fordJohnsonSort_deque(vec);
     return 0;
 }
