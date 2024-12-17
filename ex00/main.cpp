@@ -12,7 +12,7 @@
 
 #include "BitcoinExchange.hpp"
 
-int main(int __attribute__((unused))ac , char **av)
+int main(int ac , char **av)
 {
     data object;
     if (ac != 2)

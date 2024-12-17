@@ -19,6 +19,4 @@
 
 void rpn_cul(char *str);
 
-
-
 #endif

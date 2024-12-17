@@ -21,7 +21,6 @@
 
 class data{
     private:
-        std::multimap<std::string, std::string> input;
         std::map<std::string, double> data;
     public:
         int check_input_file(char *str);

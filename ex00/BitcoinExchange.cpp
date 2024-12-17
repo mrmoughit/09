@@ -152,8 +152,6 @@ int data::check_input_file(char *str){
         }
         else{
             std::cout << "Error: bad input "<< line << std::endl;
-            // return 1;
-            //close zbal 
         }
     }
     return 0;
