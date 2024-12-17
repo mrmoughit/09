@@ -1,7 +1,17 @@
-#include <iostream>
-#include <sstream>
-#include <vector>
-#include <algorithm>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abechcha <abechcha@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/17 11:16:11 by abechcha          #+#    #+#             */
+/*   Updated: 2024/12/17 12:12:28 by abechcha         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "PmergeMe.hpp"
+
 
 std::vector<int>   generateOrderIndexes(std::vector<int> vec){
     std::vector<int> vector;
@@ -18,6 +28,7 @@ std::vector<int>   generateOrderIndexes(std::vector<int> vec){
     vector.push_back(0);
     return vector;
 }
+
 std::vector<int> generateJacobsthalSequence(int PainChainnSize) {
     std::vector<int> sequence;
 
@@ -37,24 +48,24 @@ std::vector<int> generateJacobsthalSequence(int PainChainnSize) {
     return sequence;
 }
 
-void recursiveSortByFirst(std::vector<std::pair<int, int> >& vec, int left, int right) {
-    if (right - left + 1 <= 1) {
-        return;
-    }
-    int pivot = vec[right].first;
-    int i = left - 1;
+// void recursiveSortByFirst(std::vector<std::pair<int, int> >& vec, int left, int right) {
+//     if (right - left + 1 <= 1) {
+//         return;
+//     }
+//     int pivot = vec[right].first;
+//     int i = left - 1;
 
-    for (int j = left; j < right; ++j) {
-        if (vec[j].first <= pivot) {
-            i++;
-            std::swap(vec[i], vec[j]);
-        }
-    }
-    std::swap(vec[i + 1], vec[right]);
+//     for (int j = left; j < right; ++j) {
+//         if (vec[j].first <= pivot) {
+//             i++;
+//             std::swap(vec[i], vec[j]);
+//         }
+//     }
+//     std::swap(vec[i + 1], vec[right]);
 
-    recursiveSortByFirst(vec, left, i);
-    recursiveSortByFirst(vec, i + 2, right);
-}
+//     recursiveSortByFirst(vec, left, i);
+//     recursiveSortByFirst(vec, i + 2, right);
+// }
 
 void binarySearch(std::vector<int>& vec, int low, int high, int number) {
     int size = vec.size();
@@ -72,14 +83,21 @@ void binarySearch(std::vector<int>& vec, int low, int high, int number) {
     }
     vec.insert(vec.begin() + low, number);
 }
+
 void fordJohnsonSort(std::vector<int>& arr)
 {
-    int last_number ;
+    int last_number;
     bool pair = true;
     int n = arr.size();
+    clock_t start = clock();
+    std::cout << "before : " ;
+    for (std::size_t i = 0; i < arr.size(); i++){
+        std::cout << arr[i] << " ";
+    }
+    std::cout << std::endl;
     if (n <= 1){
         if (n == 1)
-            std::cout << arr[0] << std::endl;
+            print("std::vector" , start , arr);
         return;
     }
     std::vector<std::pair<int, int> > pairs;
@@ -100,10 +118,9 @@ void fordJohnsonSort(std::vector<int>& arr)
         }
         ++it;
     }
-
     std::vector<int> main_chain;
     std::vector<int> paind_chain;
-    recursiveSortByFirst(pairs , 0 , pairs.size() -1);
+    recursiveSort(pairs , 0 , pairs.size() -1);
 
     it = pairs.begin();
     while(it != pairs.end()){
@@ -122,11 +139,7 @@ void fordJohnsonSort(std::vector<int>& arr)
     }
     if (!pair)
         binarySearch(main_chain , 0 , main_chain.size() , last_number);
-    std::vector<int>::iterator tt = main_chain.begin();
-    while(tt != main_chain.end()){
-        std::cout << *tt << " ";
-        ++tt;
-    }
+    print("std::vector" , start , main_chain);
 }
 
 int main(int ac , char **av) {
@@ -143,6 +156,10 @@ int main(int ac , char **av) {
         s >> value;
         if (s.fail()){
             std::cout << "Error  " << std::endl;
+            return 1;
+        }
+        if (value < 0){
+            std::cout << "Error " << std::endl; 
             return 1;
         }
         vec.push_back(value);

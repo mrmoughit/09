@@ -12,6 +12,27 @@
 
 #include "RPN.hpp"
 
+int check_stack(std::stack<std::string> stack){
+    bool nu = false;
+    int number;
+    while(!stack.empty()){
+        std::string val = stack.top();
+        stack.pop();
+        std::istringstream s(val);
+        s >> number;
+        if (!s.fail()){
+            if (number > 9){
+                std::cout << "Error " << std::endl;
+                return 1;
+            }
+        }
+        else
+            nu = true;
+    }
+    if (!nu)
+        return 1;
+    return 0;
+}
 int is_digits(std::string str){
     int len = str.size() -1;
     while(len >= 0)
@@ -49,7 +70,7 @@ void rpn_cul(char *r)
     }
     int v = str.size() -1;
     std::stack<std::string> stack;
-    std::stack<int> stack_operation;
+    std::stack<double> stack_operation;
     for (int i = v; i >= 0 ; i--){
         for(int i = v; str[i] && str[i] == ' ' ; i--);
         if (std::isdigit(str[i]) || is_operator(str[i])){
@@ -61,18 +82,20 @@ void rpn_cul(char *r)
                 i += len;
             else
                 i += (len - (len -1));
-            stack.push(str.substr(i , len));
+            stack.push(str.substr(i ,len));
             len = 1;
         }
         else if (i >= 0 && str[i] != ' ' && str[i] != '+'  &&  str[i] != '-' &&  str[i] != '/' &&  str[i] != '*'){
-            std::cerr << "Error " << std::endl;
+            std::cerr << "Error "<< std::endl;
             return ;
         }
     }
+    if (check_stack(stack))
+        return ;
     int value;
-    int one = 0;
-    int two = 0;
-    int result;
+    double one = 0;
+    double two = 0;
+    double result;
     while(!stack.empty()){
         if (!is_digits(stack.top())){
             if (stack_operation.size() < 2)
