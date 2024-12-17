@@ -12,6 +12,13 @@
 
 #include "RPN.hpp"
 
+int is_operator(char c)
+{
+    if (c == '+' || c == '-' || c == '/' || c == '*')
+        return 1;
+    return 0;
+}
+
 int check_stack(std::stack<std::string> stack){
     bool nu = false;
     int number;
@@ -20,7 +27,11 @@ int check_stack(std::stack<std::string> stack){
         stack.pop();
         std::istringstream s(val);
         s >> number;
-        if (!s.fail()){
+        if (s.fail() && !is_operator(val[0])){
+            std::cout << "Error1111 "<< val << std::endl;
+            return 1;
+        }
+        else if (!s.fail()){
             if (number > 9){
                 std::cout << "Error " << std::endl;
                 return 1;
@@ -43,12 +54,6 @@ int is_digits(std::string str){
         len--;
     }
     return 1;
-}
-int is_operator(char c)
-{
-    if (c == '+' || c == '-' || c == '/' || c == '*')
-        return 1;
-    return 0;
 }
 void rpn_cul(char *r)
 {
