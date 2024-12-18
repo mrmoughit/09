@@ -6,7 +6,7 @@
 /*   By: abechcha <abechcha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 11:15:34 by abechcha          #+#    #+#             */
-/*   Updated: 2024/12/17 12:42:26 by abechcha         ###   ########.fr       */
+/*   Updated: 2024/12/18 11:05:39 by abechcha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,7 @@ void swap_pairs(T& container){
     }
 }
 
+int is_digit(std::string str);
+void fordJohnsonSort_vector(std::vector<int>& arr);
+void fordJohnsonSort_deque(std::vector<int>& arr);
 #endif

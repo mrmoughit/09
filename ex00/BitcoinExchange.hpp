@@ -28,6 +28,7 @@ class data{
         void get_value(std::string string);
 
 };
+
 int  check_value(std::string string);
 int check_year(std::string string);
 int check_month(std::string string);

@@ -137,7 +137,6 @@ int data::check_input_file(char *str){
         std::istringstream s(line.substr(11 , line.size()));
         s >>  value;
         data.insert(std::make_pair(line.substr(0 , 10) , value));
-
     }
     std::getline(input_file , line);
     if (line.size() != 12 || "date" != line.substr(0 , 4) || "value" != line.substr(7 , line.size()))
@@ -169,7 +168,6 @@ void data::get_value(std::string line)
     }
     std::string string= line.substr(0,10); 
     std::multimap<std::string , double>::iterator  it = data.begin();
-    std::multimap<std::string , double>::iterator  d = data.begin();
     std::multimap<std::string , double>::iterator  iit = data.end();
     double value;
     while(it != iit)
@@ -184,6 +182,7 @@ void data::get_value(std::string line)
     }
     it = data.begin();
     ++it;
+    std::multimap<std::string , double>::iterator  d = data.begin();
     while(it != iit){
         if (string.compare(it->first) < 0 && string.compare(d->first) > 0){
             std::istringstream s(line.substr(13, line.size()));
@@ -197,4 +196,10 @@ void data::get_value(std::string line)
     std::istringstream s(line.substr(13, line.size()));
     s >> value;
     std::cout  << string << " => "  << line.substr(13, line.size()) << " = "<< value * d->second << std::endl;
+}
+
+void data::extra_check_andGet_value(std::string line){
+    if (check_year(line.substr(0 , 5)) > -1 && check_month(line.substr(5, 3)) > -1 && check_day(line.substr(8,3)) > -1 &&  check_value(line.substr(13 , line.size())) > -1){
+        get_value(line);
+    }
 }
